@@ -65,13 +65,11 @@ if (options.clean) {
   if (fs.existsSync(buildPath)) {
     fs.removeSync(buildPath);
   }
-}
-
-if (!fs.existsSync(buildPath)) {
   fs.mkdirSync(buildPath);
 }
-//shared root dir to download jsc once for all architectures
-const jscDir = path.resolve(buildPath, "jsc-android");
+
+//shared root dir to download jsi once for all architectures
+const hermesDir = path.resolve(buildPath, "hermes-android");
 
 for (const arch of architectures) {
   console.log(`\nBuilding Realm JS Android for ${arch} (${buildType})`);
@@ -93,7 +91,7 @@ for (const arch of architectures) {
     "-DANDROID_NATIVE_API_LEVEL=16",
     `-DCMAKE_BUILD_TYPE=${buildType}`,
     "-DANDROID_STL=c++_static",
-    `-DJSC_ROOT_DIR=${jscDir}`,
+    `-DHERMES_ROOT_DIR=${hermesDir}`,
     process.cwd(),
   ];
   exec(cmakePath, args, { cwd: archBuildDir, stdio: "inherit" });
