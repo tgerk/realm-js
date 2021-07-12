@@ -7,6 +7,8 @@ x.x.x Release notes (yyyy-MM-dd)
 * Fixed a crash when an object which is linked to by a `mixed `is invalidated (sync only). ([#4828](https://github.com/realm/realm-core/pull/4828), since 10.5.0)
 * Fixed a rare crash when setting a mixed link for the first time which would trigger if the link was to the same table. ([#4828](https://github.com/realm/realm-core/pull/4828), since v10.5.0)
 * User profile now correctly persisted between runs. ([#3561](https://github.com/realm/realm-js/issues/3561), since v10.0.0)
+* Improve the error message when trying to use an array as value for a dictionary. ([#3730](https://github.com/realm/realm-js/issues/3730), since v10.6.0)
+
 ### Compatibility
 * MongoDB Realm Cloud.
 * Realm Studio v11.0.0.
@@ -22,8 +24,8 @@ x.x.x Release notes (yyyy-MM-dd)
 * None.
 
 ### Fixed
-* Fixed TypeScript definition of Realm.Dictionary.remove(). ([#3853](https://github.com/realm/realm-js/pull/3853) since v10.6.0)
-* Fixed Realm.Object#toJSON as it threw "Right-hand side of 'instanceof' is not an object". ([#3872](https://github.com/realm/realm-js/pull/3872) since v10.6.0)
+* Fixed TypeScript definition of `Realm.Dictionary.remove()`. ([#3853](https://github.com/realm/realm-js/pull/3853) since v10.6.0)
+* Fixed `Realm.Object#toJSON` as it threw `Right-hand side of 'instanceof' is not an object`. ([#3872](https://github.com/realm/realm-js/pull/3872) since v10.6.0)
 * Fixed `Realm not defined` error experienced when using `Realm.Set` iterators under Jest ([#3843](https://github.com/realm/realm-js/pull/3843) since v1.5.0-beta1)
 
 ### Compatibility
