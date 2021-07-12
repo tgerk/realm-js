@@ -8,7 +8,6 @@ x.x.x Release notes (yyyy-MM-dd)
 * Fixed a rare crash when setting a mixed link for the first time which would trigger if the link was to the same table. ([#4828](https://github.com/realm/realm-core/pull/4828), since v10.5.0)
 * User profile now correctly persisted between runs. ([#3561](https://github.com/realm/realm-js/issues/3561), since v10.0.0)
 * Improve the error message when trying to use an array as value for a dictionary. ([#3730](https://github.com/realm/realm-js/issues/3730), since v10.6.0)
-
 ### Compatibility
 * MongoDB Realm Cloud.
 * Realm Studio v11.0.0.
