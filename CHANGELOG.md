@@ -4,8 +4,7 @@ x.x.x Release notes (yyyy-MM-dd)
 * None.
 
 ### Fixed
-* <How to hit and notice issue? what was the impact?> ([#????](https://github.com/realm/realm-js/issues/????), since v?.?.?)
-* None.
+* When opening a synced Realm with a `Realm.Dictionary` property, an exception similar to `Property 'Dictionary.columnFloatDictionary' has been made optional` might be thrown. (since v10.6.0)
 
 ### Compatibility
 * MongoDB Realm Cloud.
