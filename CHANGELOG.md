@@ -16,6 +16,7 @@ x.x.x Release notes (yyyy-MM-dd)
 ### Internal
 * Pinning BSON to v4.4.1.
 * Disable analytics if `NODE_ENV` is set to `"production"` or `"test"`. Since `NODE_ENV` is used by many commonly used JavaScript frameworks, this should help us to get a better signal-to-noise ratio in our builders' statistics.
+* Disable analytics if the `CI` environment variable is set to some value.
 * Using Realm Core v11.2.0 @ [5e128e9f](https://github.com/realm/realm-core/pull/4844/commits/5e128e9f9c81937aaa7e7d1429794983b16077aa)
 * Switch testing to node v12.22.5.
 * Enabled CI testing on Android.
