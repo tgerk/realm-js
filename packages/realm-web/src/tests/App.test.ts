@@ -74,6 +74,8 @@ describe("App", () => {
     expect(app.id).equals("default-app-id");
   });
 
+  // the "requestHeaders" constructor option is passed-through to the App's own Fetcher prop, so is tested in the Fetcher class.
+
   it("expose a static Credentials factory", () => {
     expect(typeof App.Credentials).not.equals("undefined");
     expect(typeof App.Credentials.anonymous).equals("function");

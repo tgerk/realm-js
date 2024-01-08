@@ -129,6 +129,11 @@ export type FetcherConfig = {
    * An optional promise which resolves to the response of the app location request.
    */
   locationUrlContext: LocationUrlContext;
+  /**
+   * low-priority headers to be added to fetch; can be masked by user's request headers,
+   *  authentication header, and headers specific to any individual request
+   */
+  requestHeaders?: Headers;
 };
 
 /**
@@ -193,6 +198,7 @@ export class Fetcher implements LocationUrlContext {
   private readonly transport: NetworkTransport;
   private readonly userContext: UserContext;
   private readonly locationUrlContext: LocationUrlContext;
+  private readonly requestHeaders?: Headers;
 
   /**
    * @param config A configuration of the fetcher.
@@ -201,11 +207,14 @@ export class Fetcher implements LocationUrlContext {
    * @param config.userContext An object used to determine the requesting user.
    * @param config.locationUrlContext An object used to determine the location / base URL.
    */
-  constructor({ appId, transport, userContext, locationUrlContext }: FetcherConfig) {
+  constructor({ appId, transport, userContext, locationUrlContext, requestHeaders }: FetcherConfig) {
     this.appId = appId;
     this.transport = transport;
     this.userContext = userContext;
     this.locationUrlContext = locationUrlContext;
+    if (requestHeaders) {
+      this.requestHeaders = requestHeaders
+    }
   }
 
   clone(config: Partial<FetcherConfig>): Fetcher {
@@ -214,6 +223,7 @@ export class Fetcher implements LocationUrlContext {
       transport: this.transport,
       userContext: this.userContext,
       locationUrlContext: this.locationUrlContext,
+      requestHeaders: this.requestHeaders,
       ...config,
     });
   }
@@ -237,6 +247,8 @@ export class Fetcher implements LocationUrlContext {
         ...restOfRequest,
         url,
         headers: {
+          ...this.requestHeaders,  // from App constructor options
+          ...user?.userRequestHeaders,  // from User object 
           ...Fetcher.buildAuthorizationHeader(user, tokenType),
           ...request.headers,
         },

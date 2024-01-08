@@ -16,7 +16,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////
 
-import { NetworkTransport, DefaultNetworkTransport } from "@realm/network-transport";
+import { NetworkTransport, DefaultNetworkTransport, Headers } from "@realm/network-transport";
 import { ObjectId } from "bson";
 
 import { User, UserState } from "./User";
@@ -54,6 +54,13 @@ export interface AppConfiguration extends Realm.AppConfiguration {
    * This can useful when connecting to a server through a reverse proxy, to avoid the location request to make the client "break out" and start requesting another server.
    */
   skipLocationRequest?: boolean;
+  /**
+   * HTTP headers for function calls and data requests
+   * passed through to App's Fetcher instance,
+   * (more straightforward than providing a custom transport, default transport's extra
+   * fetch options' header will generally be overridden)
+   */
+  requestHeaders?: Headers;
 }
 
 /**
@@ -152,13 +159,14 @@ export class App<
       this._locationUrl = Promise.resolve(this.baseUrl);
     }
     this.localApp = configuration.app;
-    const { storage, transport = new DefaultNetworkTransport() } = configuration;
+    const { storage, transport = new DefaultNetworkTransport(), requestHeaders } = configuration;
     // Construct a fetcher wrapping the network transport
     this.fetcher = new Fetcher({
       appId: this.id,
       userContext: this as UserContext,
       locationUrlContext: this,
       transport,
+      requestHeaders,
     });
     // Construct the auth providers
     this.emailPasswordAuth = new EmailPasswordAuth(this.fetcher);

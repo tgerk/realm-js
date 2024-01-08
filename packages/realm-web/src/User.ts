@@ -19,6 +19,9 @@
 // We're using a dependency to decode Base64 to UTF-8, because of https://stackoverflow.com/a/30106551/503899
 import { Base64 } from "js-base64";
 
+// header names may be entered only once, user should provide multiple values as comma-separated string
+import { Headers } from "@realm/network-transport";
+
 import type { App } from "./App";
 import { Fetcher } from "./Fetcher";
 import { UserProfile } from "./UserProfile";
@@ -102,6 +105,11 @@ export class User<
   private _profile: UserProfile<UserProfileDataType> | undefined;
   private fetcher: Fetcher;
   private storage: UserStorage<UserProfileDataType>;
+
+  /**
+   * HTTP headers to be sent with mongoClient and functions requests
+   */
+  private _requestHeaders?: Headers;
 
   /**
    * @param parameters Parameters of the user.
@@ -233,6 +241,35 @@ export class User<
       }
     }
     return null;
+  }
+
+  get userRequestHeaders(): Headers {
+    return this._requestHeaders || {};
+  }
+
+  /**
+   * Headers defined by @realm/network-transport
+   * 
+   * To set headers for all users, you'd want to provide option on App constructor
+   *
+   * @param name Set an HTTP header
+   * @param value Set an HTTP header
+   */
+  public addRequestHeader(name: string, value: (() => string) | string): void {
+    this._requestHeaders = this._requestHeaders ?? {};
+    if (typeof value === "string") {
+      Object.defineProperty(this._requestHeaders, name, { enumerable: true, configurable: true, value, writable: false });
+    } else {
+      Object.defineProperty(this._requestHeaders, name, { enumerable: true, configurable: true, get: value });
+    }
+  }
+  public removeRequestHeader(name: string): void {
+    if (this._requestHeaders && name in this._requestHeaders) {
+      delete this._requestHeaders[name];
+      if (!Array.from(Object.keys(this._requestHeaders)).length) {
+        delete this._requestHeaders;
+      }
+    }
   }
 
   /**
